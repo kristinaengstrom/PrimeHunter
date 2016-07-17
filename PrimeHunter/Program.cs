@@ -1,60 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
 namespace PrimeHunter
 {
     class Program
     {
-        //public Thread workerThread;
-        public bool workerThreadIsActive = false;
-        static long maxPrimeFound = 1;
+        static bool workerThreadIsActive = false;
+        static long maxPrimeFound = 3;
         static int secondsAllowed = 5;
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Calculate the largest prime number found in {0} seconds.\n", secondsAllowed);
+
             // create separate thread for finding primes
-            //workerThread = new Thread(FindPrimeNumbers);
-            //workerThread.Start();
+            Thread workerThread = new Thread(FindPrimeNumbers);
+            workerThread.Start();
 
             try
             {
                 // start timing
-                for (int iCounter = 0; iCounter < secondsAllowed; iCounter++)
+                for (int iCounter = 1; iCounter <= secondsAllowed; iCounter++)
                 {
                     Thread.Sleep(1000); // sleep for 1 sec				
-                                        // display progress so far
+                    // display progress so far
                     Console.WriteLine("Seconds elapsed: {0}\tMax Prime Found: {1}", iCounter, maxPrimeFound);
                 }
 
                 // stop thread for finding primes
-                //workerThread.abort();
+                workerThread.Abort();
             }
             catch (Exception ex)
             {
-                //if  workerThreadIsActive
+                if (workerThreadIsActive)
 
-                //{
-                //    workerThread.abort();
-                //}
+                {
+                    workerThread.Abort();
+                }
             }
 
             // display largest prime found
-            Console.WriteLine("\nLargest prime number found in {0} is {1}", secondsAllowed, maxPrimeFound);
+            Console.WriteLine("\nLargest prime number found in {0} seconds is {1}.", secondsAllowed, maxPrimeFound);
 
-            Console.Write("\nPress any key to end.");
-
-            Console.ReadKey();
             // end			
+            Console.Write("\nPress any key to end.");
+            Console.ReadKey();
 
         }
 
-        private void FindPrimeNumbers()
+        static void FindPrimeNumbers()
         {
-            long iCounter = 0;
-            long localMaxPrime = maxPrimeFound; // starting with maxPrimeFound
+            long iCounter = maxPrimeFound; // starting with maxPrimeFound
 
             workerThreadIsActive = true;
 
@@ -66,7 +62,7 @@ namespace PrimeHunter
                     // as each prime is identified, save it to global maxPrimeFound
                     if (IsPrime(iCounter))
                     {
-                        maxPrimeFound = localMaxPrime;
+                        maxPrimeFound = iCounter;
                     }
                     iCounter++;
                 }
@@ -76,17 +72,25 @@ namespace PrimeHunter
                 workerThreadIsActive = false;
             }
         }
-
-        private bool IsPrime(long primeCandidate)
+        /// <summary>
+        /// Determine if the given value is prime
+        /// </summary>
+        /// <param name="primeCandidate"></param>
+        /// <returns></returns>
+        static bool IsPrime(long primeCandidate)
         {
             bool isPrime = true; // assume prime until we prove otherwise
-            //long iDivisor = 2;
+            long iDivisor = 1;
+            // optimization: no factor can be greater than target's square root (or truncated integer value of sq rt)
+            long iMaxDivisor = (long)Math.Round(Math.Sqrt(Convert.ToDouble(primeCandidate)), 0);
+            long iRemainder;
 
-            //while (iDivisor < primeCandidate && isPrime)
-            //{
-            //    isPrime = (primeCandidate % iDivisor == 0);
-            //    iDivisor++;
-            //}
+            while ((iDivisor < iMaxDivisor) && isPrime)
+            {
+                iDivisor++;
+                iRemainder = (primeCandidate % iDivisor);
+                isPrime = (iRemainder != 0);
+            }
 
             return isPrime;
         }
