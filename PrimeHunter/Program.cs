@@ -6,8 +6,8 @@ namespace PrimeHunter
     class Program
     {
         static bool workerThreadIsActive = false;
-        static long maxPrimeFound = 3;
-        static int secondsAllowed = 5;
+        static long maxPrimeFound = 1;
+        static int secondsAllowed = 60;
 
         static void Main(string[] args)
         {
@@ -25,6 +25,7 @@ namespace PrimeHunter
                     Thread.Sleep(1000); // sleep for 1 sec				
                     // display progress so far
                     Console.WriteLine("Seconds elapsed: {0}\tMax Prime Found: {1}", iCounter, maxPrimeFound);
+
                 }
 
                 // stop thread for finding primes
@@ -33,7 +34,6 @@ namespace PrimeHunter
             catch (Exception ex)
             {
                 if (workerThreadIsActive)
-
                 {
                     workerThread.Abort();
                 }
@@ -48,6 +48,10 @@ namespace PrimeHunter
 
         }
 
+        /// <summary>
+        /// Find all prime numbers greater than some given value.
+        /// As each value is found, store it in a global variable.
+        /// </summary>
         static void FindPrimeNumbers()
         {
             long iCounter = maxPrimeFound; // starting with maxPrimeFound
