@@ -3,9 +3,8 @@ Coding test project for NR
 
 Write a program to calculate the highest possible prime number in 60 seconds.
 
-__DESCRIPTION:  
+DESCRIPTION:  
 A prime number is an integer which is divisible by only 2 factors, itself and 1.  For example, 2, 3, 5, 7, 11, 13, 17 are prime numbers, but 1, 4, 6, 8, 9 are not prime.
-__
 
 Write a program which runs for exactly 60 seconds and calculates the highest prime number value possible in that amount of time.  Your program should display the timer progress as well as the highest numbers calculated along the way.  On completion it must display the max prime number that was calculated.
 
