@@ -1,5 +1,5 @@
 # PrimeHunter
-Coding test project for NR
+Coding test project for New Relic
 
 Write a program to calculate the highest possible prime number in 60 seconds.
 
